@@ -1,0 +1,138 @@
+/* CSS Variables - 颜色和样式常量 */
+:root {
+    /* 主题色 */
+    --primary-color: #667eea;
+    --primary-dark: #5a6fd8;
+    --secondary-color: #764ba2;
+    --secondary-dark: #6a3d9a;
+    
+    /* 状态色 */
+    --success-color: #28a745;
+    --success-light: #d4edda;
+    --success-dark: #1e7e34;
+    --success-secondary: #20c997;
+    --success-alt: #34ce57;
+    --success-text: #155724;
+    --success-border: #c3e6cb;
+    
+    --warning-color: #ffc107;
+    --warning-light: #fff3cd;
+    --warning-dark: #fd7e14;
+    --warning-bg: #FFF8E7;
+    --warning-text: #856404;
+    --warning-border: #ffeaa7;
+    
+    --danger-color: #dc3545;
+    --danger-light: #f8d7da;
+    --danger-dark: #c82333;
+    --danger-text: #721c24;
+    --danger-border: #f5c6cb;
+    
+    --info-color: #007bff;
+    --info-light: #d1ecf1;
+    --info-dark: #17a2b8;
+    --info-text: #0c5460;
+    --info-border: #bee5eb;
+    --info-chat-bg: #e3f2fd;
+    --info-chat-text: #1565c0;
+    --info-chat-border: #bbdefb;
+    
+    /* 灰色系 */
+    --gray-50: #f8f9fa;
+    --gray-100: #f1f1f1;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #e1e5e9;
+    --gray-500: #6c757d;
+    --gray-600: #495057;
+    --gray-700: #333;
+    --gray-800: #555;
+    --gray-900: #000;
+    
+    /* 特殊颜色 */
+    --white: #ffffff;
+    --light-gray: #f5f5f5;
+    --medium-gray: #666;
+    --dark-gray: #999;
+    --transparent-gray: #ccc;
+    --light-orange: #FFA500;
+    --orange: #FF8C00;
+    --chat-system-bg: #fff3e0;
+    --chat-system-text: #ef6c00;
+    --chat-system-border: #ffcc02;
+    
+    /* 渐变色 */
+    --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    --gradient-primary-dark: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+    --gradient-success: linear-gradient(135deg, var(--success-color), var(--success-secondary));
+    --gradient-success-alt: linear-gradient(135deg, #218838, #1ea080);
+    --gradient-warning: linear-gradient(90deg, var(--warning-color), var(--warning-dark));
+    --gradient-danger: linear-gradient(135deg, #ff6b6b, #ee5a52);
+    --gradient-success-btn: linear-gradient(135deg, #51cf66, #40c057);
+    --gradient-header: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    --gradient-body: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    --gradient-progress: linear-gradient(90deg, var(--success-color), var(--success-secondary), var(--info-dark), #6f42c1, #e83e8c);
+    --gradient-progress-bg: linear-gradient(90deg, var(--gray-200), var(--gray-50));
+    --gradient-green-progress: linear-gradient(90deg, var(--success-color), var(--success-alt));
+    --gradient-blue-progress: linear-gradient(90deg, rgba(0, 123, 255, 0.6), rgba(0, 86, 179, 0.6));
+    
+    /* 尺寸常量 */
+    --border-radius-sm: 4px;
+    --border-radius: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 15px;
+    --border-radius-xxl: 20px;
+    --border-radius-circle: 50%;
+    
+    /* 间距常量 */
+    --spacing-xs: 5px;
+    --spacing-sm: 8px;
+    --spacing-md: 10px;
+    --spacing-lg: 15px;
+    --spacing-xl: 20px;
+    --spacing-xxl: 25px;
+    --spacing-3xl: 30px;
+    --spacing-4xl: 40px;
+    
+    /* 阴影常量 */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+    --shadow: 0 4px 12px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.2);
+    --shadow-xl: 0 20px 40px rgba(0,0,0,0.1);
+    --shadow-primary: 0 4px 12px rgba(255, 193, 7, 0.3);
+    --shadow-success: 0 4px 12px rgba(40, 167, 69, 0.3);
+    --shadow-info: 0 4px 8px rgba(102, 126, 234, 0.3);
+    --shadow-danger: 0 4px 12px rgba(220, 53, 69, 0.4);
+    --shadow-inset: inset 0 2px 4px rgba(0,0,0,0.1);
+    
+    /* 过渡常量 */
+    --transition-fast: 0.1s ease;
+    --transition: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    --transition-all: all 0.3s;
+    --transition-border: border-color 0.3s;
+    --transition-bg: background-color 0.3s ease;
+    --transition-width: width 0.2s ease;
+    
+    /* 字体常量 */
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-md: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 1.1rem;
+    --font-size-2xl: 1.4rem;
+    --font-size-3xl: 2rem;
+    --font-size-4xl: 2.5rem;
+    --font-weight-normal: 300;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: bold;
+    --line-height-normal: 1.4;
+    --line-height-relaxed: 1.6;
+    
+    /* Z-index 常量 */
+    --z-index-base: 2;
+    --z-index-tooltip: 10000;
+    --z-index-floating: 1000;
+    --z-index-modal: 2000;
+}

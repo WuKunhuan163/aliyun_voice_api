@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿里云智能语音</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/recordrtc@5.6.2/RecordRTC.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.0/lame.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="assets/stylesheets/variables.css">
+    <link rel="stylesheet" href="assets/stylesheets/base.css">
+    <link rel="stylesheet" href="assets/stylesheets/components.css">
+    <link rel="stylesheet" href="assets/stylesheets/steps.css">
+    <link rel="stylesheet" href="assets/stylesheets/modals.css">
+    <link rel="stylesheet" href="assets/stylesheets/responsive.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💬 阿里云智能语音</h1>
+            <!-- <p>一步步配置您的语音识别服务</p> -->
+        </div>
+
+        <div class="content">
+            <div class="setup-flow">
+                <!-- Step 1: Service Activation -->
+                <div class="setup-step active" id="step1">
+                    <div class="step-circle" id="step1-circle">1</div>
+                    <div class="step-line" id="step1-line"></div>
+                    <div class="step-content" id="step1-content">
+                        <div class="step-title">开通智能语音服务</div>
+                        <div class="step-image">
+                            <img src="assets/images/step_1_initiate_service.png" alt="开通智能语音服务示意图" style="width: 100%; max-width: 400px; height: auto; margin: 15px 0; border-radius: 8px;">
+                        </div>
+                        <div class="step-description">
+                            请前往<a href="https://nls-portal.console.aliyun.com/overview" target="_blank">阿里云智能语音交互控制台</a>开通服务。
+                            <br><br>
+                            <strong>操作步骤：</strong><br>
+                            1. 点击上方控制台链接开通"实时语音识别"服务<br>
+                            2. 点击"全部项目"链接创建新项目<br>
+                            3. 完成后点击下方按钮进入下一步
+                        </div>
+                        <button class="btn btn-verify" onclick="completeServiceSetup()">完成服务开通</button>
+                        <div id="step1-status"></div>
+                    </div>
+                </div>
+
+                <!-- Step 2: AppKey Configuration -->
+                <div class="setup-step pending" id="step2">
+                    <div class="step-circle pending" id="step2-circle">2</div>
+                    <div class="step-line" id="step2-line"></div>
+                    <div class="step-content" id="step2-content">
+                        <div class="step-title">获取并配置 AppKey</div>
+                        <div class="step-image">
+                            <img src="assets/images/step_2_create_app.png" alt="创建应用获取AppKey示意图" style="width: 100%; max-width: 400px; height: auto; margin: 15px 0; border-radius: 8px;">
+                        </div>
+                        <div class="step-description">
+                            创建项目。获取项目当中的AppKey。
+                            <br><br>
+                            <strong>操作步骤：</strong><br>
+                            1. 前往<a href="https://nls-portal.console.aliyun.com/applist" target="_blank">全部项目</a>页面<br>
+                            2. 创建一个新项目，然后在列表中找到它<br>
+                            3. 点击项目名称进入项目详情<br>
+                            4. 在项目详情页面找到并复制AppKey<br>
+                            5. 将AppKey粘贴到下方输入框中
+                        </div>
+                        <div class="form-group">
+                            <label for="appKey">AppKey <span class="required">*</span></label>
+                            <input type="text" id="appKey" placeholder="从阿里云控制台项目中获取的AppKey">
+                        </div>
+                        <button class="btn btn-back" onclick="goBackToStep(1)">上一步</button>
+                        <button class="btn btn-verify" onclick="validateStep2()">完成 AppKey 配置</button>
+                        <div id="step2-status"></div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Create User -->
+                <div class="setup-step" id="step3">
+                    <div class="step-circle pending" id="step3-circle">3</div>
+                    <div class="step-line" id="step3-line"></div>
+                    <div class="step-content" id="step3-content">
+                        <div class="step-title">创建RAM用户</div>
+                        <div class="step-image">
+                            <img src="assets/images/step_3_create_user.png" alt="创建RAM用户示意图" style="width: 100%; max-width: 400px; height: auto; margin: 15px 0; border-radius: 8px;">
+                        </div>
+                        <div class="step-description">
+                            创建RAM用户，用于后续的AccessKey配置。
+                            <br><br>
+                            <strong>操作步骤：</strong><br>
+                            1. 前往<a href="https://ram.console.aliyun.com/overview?activeTab=workflow" target="_blank">RAM控制台工作流程</a><br>
+                            2. 选择"创建初始用户"下方的"账号管理员"选项<br>
+                            3. 点击"执行配置"并完成个人身份验证
+                        </div>
+                        <button class="btn btn-back" onclick="goBackToStep(2)">上一步</button>
+                        <button class="btn btn-verify" onclick="completeStep3()">完成用户创建</button>
+                        <div id="step3-status"></div>
+                    </div>
+                </div>
+
+                <!-- Step 4: AccessKey Configuration -->
+                <div class="setup-step" id="step4">
+                    <div class="step-circle pending" id="step4-circle">4</div>
+                    <div class="step-line" id="step4-line"></div>
+                    <div class="step-content" id="step4-content">
+                        <div class="step-title">创建AccessKey</div>
+                        <div class="step-image">
+                            <img src="assets/images/step_4_access_user.png" alt="访问用户管理页面" style="width: 100%; max-width: 400px; height: auto; margin: 15px 0; border-radius: 8px;">
+                            <img src="assets/images/step_4_create_accesskey.png" alt="创建AccessKey示意图" style="width: 100%; max-width: 400px; height: auto; margin: 15px 0; border-radius: 8px;">
+                        </div>
+                        <div class="step-description">
+                            为刚才创建的RAM用户创建AccessKey，用于API身份验证。
+                            <br><br>
+                            <strong>创建AccessKey步骤：</strong><br>
+                            1. 前往<a href="https://ram.console.aliyun.com/users" target="_blank">用户管理页面</a><br>
+                            2. 点击刚刚创建的用户<br>
+                            3. 往下划，找到"Access Key"板块<br>
+                            4. 点击"创建AccessKey" → 选择"本地开发环境中使用"<br>
+                            5. 通过安全认证完成AccessKey创建
+                        </div>
+                        <div class="form-group">
+                            <label for="accessKeyId">AccessKey ID <span class="required">*</span></label>
+                            <input type="text" id="accessKeyId" placeholder="从RAM用户管理页面获取">
+                        </div>
+                        <div class="form-group">
+                            <div class="label-row">
+                                <label for="accessKeySecret">
+                                    AccessKey Secret <span class="required">*</span>
+                                    <i class="bx bx-info-circle info-icon" data-tooltip="注意不要泄露Access Key。本应用程序只在当前session使用Access Key"></i>
+                                </label>
+                                <div class="secret-display" id="secretDisplay"></div>
+                            </div>
+                            <input type="password" id="accessKeySecret" placeholder="在RAM用户管理页面创建" onchange="configManager.updateSecretDisplay()">
+                        </div>
+                        <button class="btn btn-back" onclick="goBackToStep(3)">上一步</button>
+                        <button class="btn btn-verify" onclick="validateStep4()">验证 AccessKey</button>
+                        <div id="step4-status"></div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Voice Recording Test -->
+                <div class="setup-step" id="step5">
+                    <div class="step-circle pending" id="step5-circle">5</div>
+                    <div class="step-line" id="step5-line"></div>
+                    <div class="step-content" id="step5-content">
+                        <div class="step-title">语音录制测试</div>
+                        
+                        <!-- 录音进度和转录区域 -->
+                        <div id="recordingArea" class="recording-area">
+                            <!-- 实时转录框 -->
+                            <div class="transcription-container">
+                                <!-- 细细的进度条在转录框内部顶端 -->
+                                <div class="progress-container-thin">
+                                    <div class="progress-bar-thin" id="progressBarThin">
+                                        <div class="progress-fill-thin" id="progressFillThin"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 音轨峰图 -->
+                                <div class="waveform-container" id="waveformContainer">
+                                    <svg class="waveform-svg" id="waveformSvg" width="100%" height="30" viewBox="0 0 1000 30" preserveAspectRatio="none">
+                                        <!-- 背景 -->
+                                        <rect class="waveform-background" x="0" y="0" width="1000" height="30" />
+                                        <!-- 峰值区域将动态生成 -->
+                                        <g id="waveformBars"></g>
+                                        <!-- 进度遮罩 -->
+                                        <rect class="waveform-progress-mask" id="waveformProgressMask" x="0" y="0" width="0" height="30" />
+                                    </svg>
+                                </div>
+                                <div id="transcriptionResult" class="transcription-result">
+                                    <!-- 初始为空 -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 控制按钮移到转录框下方 -->
+                        <div class="recording-controls">
+                            <button class="btn btn-back" onclick="goBackToStep(4)">上一步</button>
+                            <button class="btn" id="recordingBtn" onclick="toggleRecording()">开始</button>
+                            <button class="btn allow-interact-when-complete" id="downloadBtn" onclick="downloadRecording()" style="display: none;">下载</button>
+                            <button class="btn btn-primary" onclick="goToStep(6)" style="display: none;" id="nextToStep6Btn">下一步</button>
+                        </div>
+                        
+                        <div id="step5-status"></div>
+                    </div>
+                </div>
+
+                <!-- Step 6: 智谱API配置 -->
+                <div class="setup-step" id="step6">
+                    <div class="step-circle pending" id="step6-circle">6</div>
+                    <div class="step-line" id="step6-line"></div>
+                    <div class="step-content" id="step6-content">
+                        <div class="step-title">智谱API配置</div>
+                        <div class="step-image">
+                            <img src="assets/images/step_6_zhipu_api.png" alt="智谱API配置步骤" style="width: 100%; max-width: 400px; height: auto; margin: 15px 0; border-radius: 8px;">
+                        </div>
+                        <div class="step-description">
+                            配置智谱AI API，实现语音转文本的智能分析处理。
+                            <br><br>
+                            <strong>获取智谱AI API Key步骤：</strong><br>
+                            1. 前往 <a href="https://bigmodel.cn/usercenter/proj-mgmt/apikeys" target="_blank">智谱AI控制台</a><br>
+                            2. 点击"添加新的API Key"，选择一个名称<br>
+                            3. 在下方列表中复制生成的API Key
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="label-row">
+                                <label for="zhipuApiKey">
+                                    智谱AI API Key <span class="required">*</span>
+                                    <i class="bx bx-info-circle info-icon" data-tooltip="智谱AI API Key用于调用智谱的AI服务，可以对录音识别结果进行智能分析和处理"></i>
+                                </label>
+                                <div class="secret-display" id="zhipuKeyDisplay"></div>
+                            </div>
+                            <input type="password" id="zhipuApiKey" placeholder="从智谱AI控制台获取API Key" onchange="configManager.updateZhipuKeyDisplay()">
+                        </div>
+                        
+                        <!-- Chatbot验证界面 -->
+                        <div id="chatbotContainer" class="chatbot-container" style="display: none;">
+                            <div class="chatbot-header">
+                                <h4>🤖 智谱GLM-4.5-Flash</h4>
+                            </div>
+                            <div class="chatbot-messages" id="chatbotMessages">
+                                <!-- 消息将动态添加 -->
+                            </div>
+                            <div class="chatbot-input">
+                                <input type="text" id="chatInput" placeholder="输入你的问题…" disabled>
+                                <button id="sendChatBtn" onclick="sendChatMessage()" disabled>发送</button>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-back" onclick="goBackToStep(5)">上一步</button>
+                        <button class="btn btn-verify" onclick="validateStep6()">验证API配置</button>
+                        <button class="btn btn-success" onclick="completeStep6()" style="display: none;" id="completeStep6Btn">完成配置</button>
+                        <div id="step6-status"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    </div>
+
+    <!-- 悬浮底部栏 -->
+    <div class="floating-bar">
+        <button class="floating-btn" id="importBtn">导入配置</button>
+        <button class="floating-btn" id="exportBtn">导出配置</button>
+    </div>
+
+    <!-- 配置管理模态框 -->
+    <div id="configModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">配置管理</h2>
+                <span class="close" id="closeModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- 导出配置界面 -->
+                <div id="exportView" class="config-view" style="display: none;">
+                    <div class="config-info-list" id="configInfoList">
+                        <!-- 配置信息将由JavaScript生成 -->
+                    </div>
+                    <div class="export-actions" style="margin-top: 20px;">
+                        <button class="btn btn-primary" id="copyToClipboard">复制到剪切板</button>
+                        <button class="btn btn-primary" id="downloadJson">下载JSON文件</button>
+                    </div>
+                </div>
+                
+                <!-- 导入配置界面 -->
+                <div id="importView" class="config-view" style="display: none;">
+                    <div class="form-group">
+                        <label for="configText">配置JSON：</label>
+                        <textarea class="import-text" id="configText" placeholder="在此处粘贴配置JSON..."></textarea>
+                    </div>
+                    <div class="import-actions" style="margin-top: 20px;">
+                        <button class="btn btn-primary" id="uploadJson">上传JSON文件</button>
+                        <button class="btn btn-primary" id="importConfig">导入</button>
+                        <button class="btn" id="clearConfig">清空</button>
+                    </div>
+                    <input type="file" id="jsonFileInput" accept=".json" style="display: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模块化JavaScript脚本 -->
+    <script src="assets/scripts/config-manager.js"></script>
+    <script src="assets/scripts/aliyun-api.js"></script>
+    <script src="assets/scripts/audio-recorder.js"></script>
+    <script src="assets/scripts/ui-manager.js"></script>
+    <script src="assets/scripts/app.js"></script>
+    
+    <script>
+        // 模块化后的代码已经移动到独立的脚本文件中
+        console.log('✅ 阿里云智能语音交互应用已加载模块化脚本');
+    </script>
+</body>
+</html>

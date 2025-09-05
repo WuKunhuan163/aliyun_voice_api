@@ -1,0 +1,755 @@
+/* Components styles - 组件样式 */
+@import url('variables.css');
+
+/* 表单组件 */
+.form-group {
+    margin-bottom: var(--spacing-xl);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    color: var(--gray-800);
+    font-weight: var(--font-weight-medium);
+}
+
+.form-group input, 
+.form-group select {
+    width: 100%;
+    padding: var(--spacing-lg) var(--spacing-md);
+    border: 2px solid var(--gray-400);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-md);
+    transition: var(--transition-border);
+}
+
+.form-group input:focus, 
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* 信息图标组件 */
+.info-icon {
+    margin-left: var(--spacing-xs);
+    cursor: pointer;
+    font-size: var(--font-size-md);
+    color: var(--info-color);
+    position: relative;
+}
+
+.info-icon.show-tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 50%;
+    left: calc(100% + var(--spacing-md));
+    transform: translateY(-50%);
+    background: var(--gray-700);
+    color: var(--white);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-xs);
+    white-space: normal;
+    width: max-content;
+    max-width: 150px;
+    word-wrap: break-word;
+    z-index: var(--z-index-tooltip);
+    box-shadow: var(--shadow);
+    pointer-events: none;
+}
+
+.required {
+    color: var(--danger-color);
+    font-weight: var(--font-weight-bold);
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.label-row label {
+    margin-bottom: 0;
+}
+
+.secret-input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.secret-input-container input {
+    flex: 1;
+}
+
+.secret-display {
+    font-family: monospace;
+    font-size: 12px;
+    color: #666;
+    background: #f8f9fa;
+    padding: 5px 8px;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+    min-width: 80px;
+    text-align: center;
+    display: none; /* 默认隐藏 */
+}
+
+.secret-display.show {
+    display: block;
+}
+
+/* 按钮样式 */
+.btn {
+    background: var(--gray-50);
+    color: var(--gray-600);
+    border: 1px solid var(--gray-300);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    transition: var(--transition-all);
+    margin-right: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.btn:hover {
+    background: var(--gray-600);
+    color: var(--white);
+    border-color: var(--gray-600);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 按钮变体 */
+.btn-success {
+    background: var(--gradient-success);
+    color: var(--white);
+    border: none;
+}
+
+.btn-success:hover {
+    background: var(--gradient-success-alt);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: var(--white);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: var(--gradient-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* 状态消息 */
+.status-message {
+    padding: var(--spacing-lg) var(--spacing-md);
+    border-radius: var(--border-radius);
+    margin: var(--spacing-lg) 0;
+    font-weight: var(--font-weight-medium);
+    border: 1px solid;
+}
+
+.status-message.success {
+    background: var(--success-light);
+    color: var(--success-text);
+    border-color: var(--success-border);
+}
+
+.status-message.error {
+    background: var(--danger-light);
+    color: var(--danger-text);
+    border-color: var(--danger-border);
+}
+
+.status-message.warning {
+    background: var(--warning-light);
+    color: var(--warning-text);
+    border-color: var(--warning-border);
+}
+
+.status-message.info {
+    background: var(--info-light);
+    color: var(--info-text);
+    border-color: var(--info-border);
+}
+
+/* 录音控制按钮 */
+.recording-controls {
+    text-align: center;
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.record-btn {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--border-radius-circle);
+    border: none;
+    font-size: var(--spacing-xl);
+    cursor: pointer;
+    transition: var(--transition-all);
+    margin: 0 var(--spacing-lg);
+}
+
+.record-btn.start {
+    background: var(--gradient-danger);
+    color: var(--white);
+}
+
+.record-btn.stop {
+    background: var(--gradient-success-btn);
+    color: var(--white);
+}
+
+.record-btn:hover {
+    transform: scale(1.1);
+}
+
+.record-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 转录结果 */
+.transcription-result {
+    background: #f8f9fa; /* 默认灰色背景 */
+    border-radius: 8px;
+    padding: 20px;
+    height: 120px;
+    font-size: 16px;
+    line-height: 1.6;
+    transition: background-color 0.3s ease; /* 平滑的背景色过渡 */
+    overflow-y: auto; /* 允许垂直滚动 */
+    word-wrap: break-word; /* 自动换行 */
+    white-space: pre-wrap; /* 保持空白字符和换行 */
+}
+
+/* 自定义滚动条 - 默认隐藏 */
+.transcription-result::-webkit-scrollbar {
+    width: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.transcription-result::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.transcription-result::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 4px;
+}
+
+.transcription-result::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #5a6fd8, #6a3d9a);
+}
+
+/* 鼠标悬停时显示滚动条 */
+.transcription-result:hover::-webkit-scrollbar {
+    opacity: 1;
+}
+
+.audio-player {
+    width: 100%;
+    margin: 20px 0;
+}
+
+/* 悬浮底部栏 */
+.floating-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 15px 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.floating-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.floating-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* 加载动画 */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 新的录音界面样式 */
+.recording-area {
+    margin-top: 20px;
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+/* 细细的进度条样式 - 类似博客阅读进度条 */
+.progress-container-thin {
+    position: relative;
+    width: 100%;
+    height: 3px;
+    background: #e9ecef;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0; /* 紧贴文本框 */
+}
+
+.progress-bar-thin {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.progress-fill-thin {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ffc107, #fd7e14);
+    transition: width 0.2s ease;
+    border-radius: 2px;
+}
+
+/* 进度条样式 */
+.progress-container {
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(90deg, #e9ecef, #f8f9fa);
+    border-radius: 15px;
+    border: 2px solid #dee2e6;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #28a745, #20c997, #17a2b8, #6f42c1, #e83e8c);
+    background-size: 300% 100%;
+    border-radius: 13px;
+    width: 0%;
+    transition: width 0.3s ease;
+    animation: progressShimmer 2s linear infinite;
+}
+
+@keyframes progressShimmer {
+    0% { background-position: 300% 0; }
+    100% { background-position: -300% 0; }
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size: 14px;
+    color: #495057;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+    z-index: 2;
+}
+
+/* 转录容器样式 */
+.transcription-container {
+    background: #ffffff;
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 0; /* 移除内边距，让进度条贴顶 */
+    margin-bottom: 20px;
+    overflow: hidden; /* 确保圆角效果 */
+}
+
+.transcription-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.transcription-header h4 {
+    margin: 0;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.recording-indicator {
+    font-size: 14px;
+    color: #dc3545;
+    font-weight: bold;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+/* 新的录音控制按钮样式 */
+.recording-controls-new {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.recording-control-btn {
+    min-width: 100px;
+    font-size: 14px;
+}
+
+.recording-control-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 停止状态按钮样式 - 使用类而不是内联样式选择器 */
+.recording-controls .btn.btn-stop {
+    background: var(--danger-color);
+    color: var(--white);
+}
+
+.recording-controls .btn.btn-stop:hover {
+    background: var(--danger-dark);
+    box-shadow: var(--shadow-danger);
+}
+
+/* 音轨峰图样式 */
+.waveform-container {
+    width: 100%;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    overflow: hidden;
+    background: transparent;
+}
+
+.waveform-svg {
+    display: block;
+    width: 100%;
+    height: 30px;
+}
+
+.waveform-background {
+    fill: #e9ecef; /* 默认灰色背景 */
+    width: 100%;
+    height: 100%;
+}
+
+.waveform-bar {
+    fill: #6c757d; /* 默认灰色峰值 */
+    transition: height 0.1s ease;
+}
+
+.waveform-progress-mask {
+    fill: rgba(108, 117, 125, 0.3); /* 默认半透明灰色遮罩 */
+    transition: width 0.1s ease;
+}
+
+/* 步骤状态相关的波形样式 */
+.setup-step.active .waveform-background {
+    fill: var(--warning-light);
+}
+
+.setup-step.active .waveform-bar {
+    fill: var(--warning-color);
+}
+
+.setup-step.active .waveform-progress-mask {
+    fill: rgba(255, 193, 7, 0.3);
+}
+
+.setup-step.completed .waveform-background {
+    fill: var(--success-light);
+}
+
+.setup-step.completed .waveform-bar {
+    fill: var(--success-color);
+}
+
+.setup-step.completed .waveform-progress-mask {
+    fill: rgba(40, 167, 69, 0.3);
+}
+
+.setup-step.completed .progress-fill-thin {
+    background: var(--gradient-green-progress);
+}
+
+.setup-step.processing .waveform-background {
+    fill: rgba(0, 123, 255, 0.05);
+}
+
+.setup-step.processing .waveform-bar {
+    fill: rgba(0, 123, 255, 0.15);
+}
+
+.setup-step.processing .waveform-progress-mask {
+    fill: rgba(0, 123, 255, 0.15);
+}
+
+.setup-step.processing .progress-fill-thin {
+    background: var(--gradient-blue-progress);
+}
+
+/* 语音识别结果样式 */
+.recognition-item {
+    margin: 8px 0;
+    padding: 12px 16px;
+    background: rgba(0, 123, 255, 0.1);
+    border-left: 4px solid #007bff;
+    border-radius: 6px;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.recognition-text {
+    color: #333;
+    font-size: 16px;
+    line-height: 1.4;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.recognition-confidence {
+    color: #6c757d;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 第六步按钮样式已合并到通用按钮样式中 */
+
+/* Chatbot 样式 */
+.chatbot-container {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    margin: 20px 0;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.chatbot-header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px 10px 0 0;
+}
+
+.chatbot-header h4 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+}
+
+.chatbot-header p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.chatbot-messages {
+    height: 300px;
+    overflow-y: auto;
+    padding: 15px;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.chat-message.ai {
+    align-self: flex-start;
+    background: #e3f2fd;
+    color: #1565c0;
+    border: 1px solid #bbdefb;
+}
+
+.chat-message.user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.chat-message.system {
+    align-self: center;
+    background: #fff3e0;
+    color: #ef6c00;
+    border: 1px solid #ffcc02;
+    font-style: italic;
+    text-align: center;
+}
+
+.chatbot-input {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #e9ecef;
+    gap: 10px;
+}
+
+.chatbot-input input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 20px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.chatbot-input input:focus {
+    border-color: #667eea;
+}
+
+.chatbot-input button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.chatbot-input button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
+.chatbot-input button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.chatbot-input input.allow-interact-when-complete {
+    border-color: #667eea !important;
+    background-color: white !important;
+    color: #333 !important;
+    cursor: text !important;
+}
+
+.chatbot-input button.allow-interact-when-complete {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    color: white !important;
+    cursor: pointer !important;
+}
+
+.chatbot-input button.allow-interact-when-complete:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3) !important;
+}
+
+/* 配置管理模态框样式 */
+.config-info-list {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+}
+
+.config-info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.config-info-item:last-child {
+    border-bottom: none;
+}
+
+.config-info-label {
+    font-weight: 600;
+    color: #495057;
+    min-width: 120px;
+}
+
+.config-info-value {
+    color: #6c757d;
+    font-family: monospace;
+    background: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+    flex: 1;
+    margin-left: 15px;
+    word-break: break-all;
+}
+
+.export-actions, .import-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* 主要按钮样式已合并到通用按钮样式中 */

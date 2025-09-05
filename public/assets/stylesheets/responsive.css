@@ -1,0 +1,45 @@
+/* Responsive styles - 响应式样式 */
+@import url('variables.css');
+
+@media (max-width: 768px) {
+    .content {
+        padding: var(--spacing-xl);
+    }
+    
+    .header h1 {
+        font-size: var(--font-size-3xl);
+    }
+    
+    .setup-step {
+        padding-left: 60px;
+    }
+    
+    .step-circle {
+        width: 40px;
+        height: 40px;
+        font-size: var(--font-size-md);
+    }
+    
+    .step-line {
+        left: 19px;
+        top: 40px;
+    }
+    
+    .record-btn {
+        width: 80px;
+        height: 80px;
+        font-size: var(--font-size-md);
+    }
+
+    .floating-bar {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: var(--spacing-md);
+        justify-content: center;
+    }
+
+    .modal-content {
+        margin: 5% auto;
+        width: 95%;
+    }
+}

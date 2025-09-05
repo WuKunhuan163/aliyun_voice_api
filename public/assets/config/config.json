@@ -1,0 +1,6 @@
+{
+  "appKey": "test-key",
+  "accessKeyId": "test-id",
+  "accessKeySecret": "test-secret",
+  "region": "cn-shanghai"
+}
