@@ -152,7 +152,7 @@ class AliyunAPI {
 
         try {
             // 使用与测试文件相同的端点，添加时间戳防止缓存
-            const response = await fetch(`/api/recognize-audio?t=${Date.now()}`, {
+            const response = await fetch(`${this.apiBaseUrl}/recognize?t=${Date.now()}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -319,7 +319,7 @@ class ConfigManager {
      */
     async saveToServer() {
         try {
-            const response = await fetch('/api/config', {
+                const response = await fetch(`${this.config.apiBaseUrl}/config`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -346,7 +346,7 @@ class ConfigManager {
      */
     async loadFromServer() {
         try {
-            const response = await fetch('/api/config');
+            const response = await fetch(`${this.config.apiBaseUrl}/config`);
             
             if (response.ok) {
                 const serverConfig = await response.json();
