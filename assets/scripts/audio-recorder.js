@@ -128,15 +128,19 @@ class AudioRecorder {
                 };
             }
 
-            // 根据处理器类型连接音频节点（不连接到destination避免回声）
+            // 根据处理器类型连接音频节点（使用静音GainNode避免回声）
             if (this.useScriptProcessor) {
-                // ScriptProcessor模式连接（不连接destination，避免播放录音内容）
+                // ScriptProcessor需要连接到destination才能工作，但使用静音GainNode避免回声
+                this.silentGain = this.audioContext.createGain();
+                this.silentGain.gain.value = 0; // 设置音量为0，避免播放声音
+                
                 this.audioSource.connect(this.scriptProcessor);
-                // 注意：不连接到destination，避免回声
+                this.scriptProcessor.connect(this.silentGain);
+                this.silentGain.connect(this.audioContext.destination);
             } else {
-                // AudioWorklet模式连接（不连接destination，避免播放录音内容）
+                // AudioWorklet模式不需要连接到destination
                 this.audioSource.connect(this.audioWorkletNode);
-                // 注意：不连接到destination，避免回声
+                // AudioWorklet不需要连接destination就能工作
             }
             
             console.log('🔗 音频节点连接完成:');
@@ -224,6 +228,10 @@ class AudioRecorder {
             if (this.scriptProcessor) {
                 this.scriptProcessor.disconnect();
                 this.scriptProcessor = null;
+            }
+            if (this.silentGain) {
+                this.silentGain.disconnect();
+                this.silentGain = null;
             }
             
             // 关键：关闭麦克风轨道
