@@ -1718,56 +1718,53 @@ async function sendChatMessage() {
 
 // 初始化聊天 - 已移除，现在使用自动验证流程
 
-// 调用智谱API
-async function callZhipuAPI(messages, modelId = 'glm-4.5-flash') {
+// 调用智谱API（通过我们的zhipu_llm_api服务）
+async function callZhipuAPI(messages, modelId = 'glm-4-flash') {
     const requestBody = {
+        apiKey: currentZhipuApiKey,
         model: modelId,
-        messages: messages,
-        temperature: 0.6,
-        stream: false
+        messages: messages
     };
     
-    console.log('📤 智谱API请求:', {
-        url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+    console.log('📤 智谱API请求（通过zhipu_llm_api服务）:', {
+        url: 'https://zhipu-llm-api.vercel.app/api/chat',
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${currentZhipuApiKey.substring(0, 8)}...`,
             'Content-Type': 'application/json'
         },
-        body: requestBody
+        body: {
+            ...requestBody,
+            apiKey: currentZhipuApiKey.substring(0, 8) + '...' // 隐藏完整API Key
+        }
     });
     
-    const response = await fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
+    const response = await fetch('https://zhipu-llm-api.vercel.app/api/chat', {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${currentZhipuApiKey}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(requestBody)
     });
     
-    console.log('📥 智谱API响应状态:', response.status, response.statusText);
-    console.log('📥 智谱API响应头:', Object.fromEntries(response.headers.entries()));
+    console.log('📥 智谱API服务响应状态:', response.status, response.statusText);
     
-    if (!response.ok) {
-        const errorText = await response.text();
-        console.error('❌ 智谱API错误响应:', errorText);
+    const result = await response.json();
+    console.log('📥 智谱API服务完整响应:', result);
+    
+    if (!result.success) {
+        console.error('❌ 智谱API服务错误:', result.error);
         
-        if (response.status === 401) {
+        if (response.status === 401 || result.error?.includes('API key')) {
             throw new Error('API Key无效，请检查是否正确');
         } else {
-            throw new Error(`API调用失败: ${response.status} - ${errorText}`);
+            throw new Error(`API调用失败: ${result.error}`);
         }
     }
     
-    const data = await response.json();
-    console.log('📥 智谱API完整响应:', data);
-    
-    // 尝试从不同字段获取内容
-    const message = data.choices?.[0]?.message || {};
-    const content = message.content || message.reasoning_content || '';
+    // 从我们的API服务响应中提取内容
+    const message = result.data?.choices?.[0]?.message || {};
+    const content = message.content || '';
     console.log('📝 提取的内容:', content);
-    console.log('🔍 消息对象:', message);
     
     return content;
 }

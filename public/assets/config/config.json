@@ -1,0 +1,7 @@
+{
+  "appKey": "",
+  "accessKeyId": "",
+  "accessKeySecret": "",
+  "region": "cn-shanghai",
+  "apiBaseUrl": "https://aliyun-voice-to-text-api.vercel.app/api"
+}

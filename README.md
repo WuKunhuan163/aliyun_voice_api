@@ -56,6 +56,7 @@
 2. **智谱AI** (可选，用于智能分析)
    - 前往 [智谱AI开放平台](https://bigmodel.cn/)
    - 获取API Key
+   - 注意：智谱AI功能现在通过独立的 [zhipu_llm_api](https://zhipu-llm-api.vercel.app) 服务提供
 
 ### 配置步骤
 
@@ -83,6 +84,13 @@
 - **Express风格路由**: RESTful API设计
 - **阿里云NLS SDK**: 语音识别服务集成
 - **Vercel Serverless**: 云函数部署
+
+### API服务架构
+- **阿里云语音识别**: 直接集成阿里云NLS API
+- **智谱AI服务**: 通过独立的 [zhipu_llm_api](https://zhipu-llm-api.vercel.app) 微服务
+  - 解耦智谱AI功能，独立部署和维护
+  - 统一的API接口，便于其他项目复用
+  - 支持GLM-4-Flash等多种模型
 
 ### 核心模块
 
