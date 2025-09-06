@@ -128,15 +128,15 @@ class AudioRecorder {
                 };
             }
 
-            // 根据处理器类型连接音频节点
+            // 根据处理器类型连接音频节点（不连接到destination避免回声）
             if (this.useScriptProcessor) {
-                // ScriptProcessor模式连接
+                // ScriptProcessor模式连接（不连接destination，避免播放录音内容）
                 this.audioSource.connect(this.scriptProcessor);
-                this.scriptProcessor.connect(this.audioContext.destination);
+                // 注意：不连接到destination，避免回声
             } else {
-                // AudioWorklet模式连接
+                // AudioWorklet模式连接（不连接destination，避免播放录音内容）
                 this.audioSource.connect(this.audioWorkletNode);
-                this.audioWorkletNode.connect(this.audioContext.destination);
+                // 注意：不连接到destination，避免回声
             }
             
             console.log('🔗 音频节点连接完成:');
