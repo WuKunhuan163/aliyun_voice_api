@@ -67,11 +67,21 @@ class AudioRecorder {
             });
             console.log('🎵 AudioContext创建完成，采样率:', this.audioContext.sampleRate);
 
-            // 加载AudioWorklet处理器
-            await this.audioContext.audioWorklet.addModule('assets/scripts/audio-processor.js');
-            
-            // 创建AudioWorkletNode
-            this.audioWorkletNode = new AudioWorkletNode(this.audioContext, 'audio-recorder-processor');
+            // 检测协议并选择合适的音频处理方式
+            if (location.protocol === 'file:') {
+                console.log('🔧 检测到file://协议，使用ScriptProcessor作为fallback');
+                // 使用ScriptProcessor作为fallback（适用于file://协议）
+                this.scriptProcessor = this.audioContext.createScriptProcessor(4096, 1, 1);
+                this.useScriptProcessor = true;
+            } else {
+                console.log('🔧 使用AudioWorklet处理器');
+                // 加载AudioWorklet处理器
+                await this.audioContext.audioWorklet.addModule('assets/scripts/audio-processor.js');
+                
+                // 创建AudioWorkletNode
+                this.audioWorkletNode = new AudioWorkletNode(this.audioContext, 'audio-recorder-processor');
+                this.useScriptProcessor = false;
+            }
             
             // 创建一个音频源
             this.audioSource = this.audioContext.createMediaStreamSource(stream);
@@ -86,20 +96,48 @@ class AudioRecorder {
             // 启动峰值图定时更新
             this.startWaveformTimer();
 
-            // 监听来自AudioWorklet的消息
-            this.audioWorkletNode.port.onmessage = (event) => {
-                const { type, data, maxAmplitude, rmsLevel, bufferCount, dbLevel, duration } = event.data;
-                
-                if (type === 'audioData') {
-                    this.audioBuffer.push(new Float32Array(data));
-                } else if (type === 'audioLevel') {
-                    this.currentAmplitude = Math.max(this.currentAmplitude, maxAmplitude);
-                }
-            };
+            // 根据处理器类型设置音频处理
+            if (this.useScriptProcessor) {
+                // ScriptProcessor模式（file://协议fallback）
+                this.scriptProcessor.onaudioprocess = (event) => {
+                    const inputBuffer = event.inputBuffer.getChannelData(0);
+                    const outputBuffer = event.outputBuffer.getChannelData(0);
+                    
+                    // 复制音频数据
+                    this.audioBuffer.push(new Float32Array(inputBuffer));
+                    
+                    // 计算音量
+                    let sum = 0;
+                    for (let i = 0; i < inputBuffer.length; i++) {
+                        sum += inputBuffer[i] * inputBuffer[i];
+                        outputBuffer[i] = inputBuffer[i]; // 透传音频
+                    }
+                    const rmsLevel = Math.sqrt(sum / inputBuffer.length);
+                    this.currentAmplitude = Math.max(this.currentAmplitude, rmsLevel);
+                };
+            } else {
+                // AudioWorklet模式（正常HTTP协议）
+                this.audioWorkletNode.port.onmessage = (event) => {
+                    const { type, data, maxAmplitude, rmsLevel, bufferCount, dbLevel, duration } = event.data;
+                    
+                    if (type === 'audioData') {
+                        this.audioBuffer.push(new Float32Array(data));
+                    } else if (type === 'audioLevel') {
+                        this.currentAmplitude = Math.max(this.currentAmplitude, maxAmplitude);
+                    }
+                };
+            }
 
-            // 连接节点：音频源 -> AudioWorklet -> 输出
-            this.audioSource.connect(this.audioWorkletNode);
-            this.audioWorkletNode.connect(this.audioContext.destination);
+            // 根据处理器类型连接音频节点
+            if (this.useScriptProcessor) {
+                // ScriptProcessor模式连接
+                this.audioSource.connect(this.scriptProcessor);
+                this.scriptProcessor.connect(this.audioContext.destination);
+            } else {
+                // AudioWorklet模式连接
+                this.audioSource.connect(this.audioWorkletNode);
+                this.audioWorkletNode.connect(this.audioContext.destination);
+            }
             
             console.log('🔗 音频节点连接完成:');
             console.log('   - audioSource:', !!this.audioSource);
@@ -182,6 +220,10 @@ class AudioRecorder {
             if (this.audioWorkletNode) {
                 this.audioWorkletNode.disconnect();
                 this.audioWorkletNode = null;
+            }
+            if (this.scriptProcessor) {
+                this.scriptProcessor.disconnect();
+                this.scriptProcessor = null;
             }
             
             // 关键：关闭麦克风轨道

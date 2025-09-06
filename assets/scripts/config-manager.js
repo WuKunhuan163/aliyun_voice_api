@@ -44,6 +44,12 @@ class ConfigManager {
      * 从配置文件加载API基础URL
      */
     async loadConfigFile() {
+        // 在file://协议下跳过配置文件加载
+        if (location.protocol === 'file:') {
+            console.log('🔧 检测到file://协议，跳过配置文件加载，使用默认API地址:', this.config.apiBaseUrl);
+            return;
+        }
+        
         try {
             const response = await fetch('assets/config/config.json');
             if (response.ok) {
