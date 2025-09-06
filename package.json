@@ -2,10 +2,10 @@
   "name": "aliyun-voice-recognition-vercel",
   "version": "1.0.0",
   "description": "阿里云语音识别Web应用 - Vercel版本（使用API服务）",
-  "main": "public/index.html",
+  "main": "index.html",
   "scripts": {
     "build": "echo 'Build completed'",
-    "serve": "npx http-server public -p 8080 -o"
+    "serve": "npx http-server . -p 8080 -o"
   },
   "keywords": [
     "aliyun",
