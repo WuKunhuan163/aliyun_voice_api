@@ -87,7 +87,7 @@
     left: 24px;
     top: 50px;
     width: 2px;
-    height: calc(100% - 10px);
+    height: 100%;
     background: var(--gray-300);
     transition: var(--transition-all);
 }
