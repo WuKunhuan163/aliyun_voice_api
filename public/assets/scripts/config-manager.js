@@ -9,11 +9,13 @@ class ConfigManager {
             appKey: '',
             accessKeyId: '',
             accessKeySecret: '',
-            zhipuApiKey: ''
+            zhipuApiKey: '',
+            apiBaseUrl: 'https://aliyun-voice-to-text-api.vercel.app/api'
         };
         this.completedSteps = new Set(); // 记录已成功完成的步骤
 
         this.loadFromSession();
+        this.loadConfigFile(); // 加载配置文件
     }
 
     /**
@@ -36,6 +38,24 @@ class ConfigManager {
             console.warn('⚠️ 从sessionStorage加载配置失败:', error);
         }
         this.updateUI();
+    }
+    
+    /**
+     * 从配置文件加载API基础URL
+     */
+    async loadConfigFile() {
+        try {
+            const response = await fetch('assets/config/config.json');
+            if (response.ok) {
+                const fileConfig = await response.json();
+                if (fileConfig.apiBaseUrl) {
+                    this.config.apiBaseUrl = fileConfig.apiBaseUrl;
+                }
+                console.log('✅ 配置文件加载成功，API基础URL:', this.config.apiBaseUrl);
+            }
+        } catch (error) {
+            console.warn('⚠️ 配置文件加载失败，使用默认API地址:', error);
+        }
     }
 
     /**

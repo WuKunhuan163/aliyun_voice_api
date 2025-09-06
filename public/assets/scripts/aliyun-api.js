@@ -7,6 +7,15 @@ class AliyunAPI {
     constructor() {
         this.currentToken = null;
         this.tokenExpireTime = null;
+        this.apiBaseUrl = null;
+    }
+    
+    /**
+     * 设置API基础URL
+     * @param {string} baseUrl - API基础URL
+     */
+    setApiBaseUrl(baseUrl) {
+        this.apiBaseUrl = baseUrl;
     }
 
     /**
@@ -20,7 +29,7 @@ class AliyunAPI {
         console.log('🔄 开始验证阿里云凭据...');
         
         try {
-            const response = await fetch('/api/get-token', {
+            const response = await fetch(`${this.apiBaseUrl}/get-token`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -210,7 +219,7 @@ class AliyunAPI {
 
         try {
             // 通过后端代理建立WebSocket连接
-            const response = await fetch('/api/realtime-token', {
+            const response = await fetch(`${this.apiBaseUrl}/get-token`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

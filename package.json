@@ -1,27 +1,22 @@
 {
-  "name": "aliyun-voice-recognition",
+  "name": "aliyun-voice-recognition-vercel",
   "version": "1.0.0",
-  "description": "阿里云语音识别Web应用",
-  "main": "public/assets/scripts/server.js",
+  "description": "阿里云语音识别Web应用 - Vercel版本（使用API服务）",
+  "main": "public/index.html",
   "scripts": {
-    "start": "node public/assets/scripts/server.js",
-    "dev": "node public/assets/scripts/server.js -o",
-    "build": "echo 'Build completed'"
+    "build": "echo 'Build completed'",
+    "serve": "npx http-server public -p 8080 -o"
   },
   "keywords": [
     "aliyun",
     "voice-recognition",
     "speech-to-text",
-    "zhipu-ai"
+    "vercel",
+    "github-pages"
   ],
   "author": "",
   "license": "MIT",
-  "dependencies": {
-    "@alicloud/pop-core": "^1.7.12",
-    "alibabacloud-nls": "^1.0.4",
-    "ws": "^8.14.2"
-  },
-  "engines": {
-    "node": ">=14.0.0"
+  "devDependencies": {
+    "http-server": "^14.1.1"
   }
 }

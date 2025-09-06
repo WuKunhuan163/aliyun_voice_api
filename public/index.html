@@ -291,6 +291,18 @@
     <script src="assets/scripts/app.js"></script>
     
     <script>
+        // 初始化全局对象
+        const config = new ConfigManager();
+        const aliyunAPI = new AliyunAPI();
+        const audioRecorder = new AudioRecorder();
+        const uiManager = new UIManager();
+        
+        // 等待配置加载完成后设置API基础URL
+        setTimeout(() => {
+            aliyunAPI.setApiBaseUrl(config.config.apiBaseUrl);
+            console.log('✅ AliyunAPI基础URL已设置:', config.config.apiBaseUrl);
+        }, 100);
+        
         // 模块化后的代码已经移动到独立的脚本文件中
         console.log('✅ 阿里云智能语音交互应用已加载模块化脚本');
     </script>
