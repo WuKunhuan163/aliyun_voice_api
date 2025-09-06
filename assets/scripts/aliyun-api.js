@@ -151,28 +151,51 @@ class AliyunAPI {
         const recognitionOptions = { ...defaultOptions, ...options };
 
         try {
+            const apiUrl = `${this.apiBaseUrl}/recognize?t=${Date.now()}`;
+            const requestData = {
+                token: token,
+                audioData: Array.from(new Uint8Array(audioData)),
+                format: recognitionOptions.format,
+                sampleRate: recognitionOptions.sampleRate,
+                appKey: configManager.getConfig('appKey'),
+                accessKeyId: configManager.getConfig('accessKeyId'),
+                accessKeySecret: configManager.getConfig('accessKeySecret')
+            };
+            
+            console.log('🔗 VERCEL_SERVER API调用详情:');
+            console.log('   URL:', apiUrl);
+            console.log('   Method: POST');
+            console.log('   Content-Type: application/json');
+            console.log('   Token:', token ? token.substring(0, 8) + '...' : 'null');
+            console.log('   AudioData长度:', requestData.audioData.length);
+            console.log('   Format:', requestData.format);
+            console.log('   SampleRate:', requestData.sampleRate);
+            console.log('   AppKey:', requestData.appKey ? requestData.appKey.substring(0, 8) + '...' : 'null');
+            console.log('   AccessKeyId:', requestData.accessKeyId ? requestData.accessKeyId.substring(0, 8) + '...' : 'null');
+            console.log('   AccessKeySecret:', requestData.accessKeySecret ? '***存在***' : 'null');
+            
             // 使用与测试文件相同的端点，添加时间戳防止缓存
-            const response = await fetch(`${this.apiBaseUrl}/recognize?t=${Date.now()}`, {
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    token: token,
-                    audioData: Array.from(new Uint8Array(audioData)),
-                    format: recognitionOptions.format,
-                    sampleRate: recognitionOptions.sampleRate,
-                    appKey: configManager.getConfig('appKey'),
-                    accessKeyId: configManager.getConfig('accessKeyId'),
-                    accessKeySecret: configManager.getConfig('accessKeySecret')
-                })
+                body: JSON.stringify(requestData)
             });
 
+            console.log('📥 VERCEL_SERVER API响应详情:');
+            console.log('   Status:', response.status);
+            console.log('   StatusText:', response.statusText);
+            console.log('   Headers:', Object.fromEntries(response.headers.entries()));
+            
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorText = await response.text();
+                console.log('❌ 响应错误内容:', errorText);
+                throw new Error(`HTTP error! status: ${response.status}, text: ${errorText}`);
             }
 
             const result = await response.json();
+            console.log('✅ VERCEL_SERVER API解析结果:', result);
             
             if (result.success) {
                 return {

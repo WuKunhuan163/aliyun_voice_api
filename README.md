@@ -17,6 +17,22 @@
 
 ## 🚀 快速开始
 
+### 本地启动
+```bash
+# 进入项目目录
+cd vercel_server
+
+# 启动本地服务器（推荐端口3000）
+npx http-server . -p 3000
+
+# 或者使用后台启动
+npx http-server . -p 3000 &
+```
+
+### 访问地址
+- 本地访问：`http://localhost:3000`
+- 确保使用Chrome、Firefox或Safari浏览器以支持录音功能
+
 ### 在线使用
 
 直接访问 [https://250903-aliyun-voice.vercel.app](https://250903-aliyun-voice.vercel.app)，按照步骤配置API密钥即可使用。
