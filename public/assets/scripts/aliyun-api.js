@@ -155,8 +155,7 @@ class AliyunAPI {
             const response = await fetch(`${this.apiBaseUrl}/recognize?t=${Date.now()}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'no-cache'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     token: token,
